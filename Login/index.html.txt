@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>login page</title>
+    </head>
+    <body>
+        <h2> username and password validation</h2><!-- comment -->
+        <form action="LoginServlet" method="post">
+            <label> Username:</label>
+            <input type="text" name="username" required>
+            <br><br><!-- comment -->
+            <label>Password:</label>
+            <input type="password" name="password" required><!-- comment -->
+            <br><br><!-- comment -->
+            <input type="submit" value="login">
+        </form>
+    </body>
+</html>
