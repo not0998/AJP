@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSP Calculator</title>
+</head>
+<body>
+    <h2>Simple Calculator</h2>
+
+    <form action="calculator.jsp" method="post">
+
+        Enter First Number:
+        <input type="number" name="number1" step="any" required>
+        <br><br>
+
+        Enter Second Number:
+        <input type="number" name="number2" step="any" required>
+        <br><br>
+
+        Select Operation:
+        <select name="operation">
+            <option value="add">Addition (+)</option>
+            <option value="sub">Subtraction (-)</option>
+            <option value="mul">Multiplication (*)</option>
+            <option value="div">Division (/)</option>
+        </select>
+        <br><br>
+
+        <input type="submit" value="Calculate">
+        <input type="reset" value="Reset">
+
+    </form>
+</body>
+</html>
