@@ -13,7 +13,7 @@ public class StudentCRUD {
 
             // 2. Establish Connection
             Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/studentdb", "root", "Rasik@mysql1");
+                "jdbc:mysql://localhost:3306/studentdb", "root", "root");
 
             while (true) {
                 System.out.println("\n1.Insert  2.Display  3.Update  4.Delete  5.Exit");
