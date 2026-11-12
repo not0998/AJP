@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Form</title>
+</head>
+<body>
+    <h2>Student Feedback Form</h2>
+
+    <form action="FeedbackServlet" method="post">
+
+        Name:
+        <input type="text" name="name" required>
+        <br><br>
+
+        Email:
+        <input type="email" name="email" required>
+        <br><br>
+
+        Mobile Number:
+        <input type="text" name="mobile" required>
+        <br><br>
+
+        Course:
+        <select name="course">
+            <option value="ECE">ECE</option>
+            <option value="CSE">CSE</option>
+            <option value="Mechanical">Mechanical</option>
+            <option value="Civil">Civil</option>
+        </select>
+        <br><br>
+
+        Rating:
+        <input type="radio" name="rating" value="Excellent"> Excellent
+        <input type="radio" name="rating" value="Good"> Good
+        <input type="radio" name="rating" value="Average"> Average
+        <br><br>
+
+        Feedback:
+        <textarea name="feedback" rows="4" cols="30"></textarea>
+        <br><br>
+
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+
+    </form>
+</body>
+</html>
