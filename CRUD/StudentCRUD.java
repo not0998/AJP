@@ -1,139 +1,101 @@
-package studentcrud;
 
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class StudentCRUD {
-
-    static final String URL = "jdbc:mysql://localhost:3306/studentdb";
-    static final String USER = "root";
-    static final String PASSWORD = "root";
-
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
         try {
+            // 1. Load Driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-
-            System.out.println("Database Connected Successfully!");
+            // 2. Establish Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/studentdb", "root", "Rasik@mysql1");
 
             while (true) {
+                System.out.println("\n1.Insert  2.Display  3.Update  4.Delete  5.Exit");
+                System.out.print("Enter choice: ");
+                int ch = sc.nextInt();
 
-                System.out.println("\n===== Student CRUD Operations =====");
-                System.out.println("1. Insert Student");
-                System.out.println("2. Display Students");
-                System.out.println("3. Update Student");
-                System.out.println("4. Delete Student");
-                System.out.println("5. Exit");
-                System.out.print("Enter your choice: ");
+                if (ch == 1) {
+                    // INSERT
+                    System.out.print("Enter ID, Name, Marks: ");
+                    int id = sc.nextInt();
+                    String name = sc.next();
+                    double marks = sc.nextDouble();
 
-                int choice = sc.nextInt();
+                    PreparedStatement ps = con.prepareStatement(
+                        "INSERT INTO student VALUES(?,?,?)");
 
-                switch (choice) {
+                    ps.setInt(1, id);
+                    ps.setString(2, name);
+                    ps.setDouble(3, marks);
+                    ps.executeUpdate();
 
-                    case 1:
-                        System.out.print("Enter ID: ");
-                        int id = sc.nextInt();
-                        sc.nextLine();
-
-                        System.out.print("Enter Name: ");
-                        String name = sc.nextLine();
-
-                        System.out.print("Enter Marks: ");
-                        double marks = sc.nextDouble();
-
-                        String insertQuery =
-                            "INSERT INTO student (id, name, marks) VALUES (?, ?, ?)";
-
-                        PreparedStatement ps1 = con.prepareStatement(insertQuery);
-
-                        ps1.setInt(1, id);
-                        ps1.setString(2, name);
-                        ps1.setDouble(3, marks);
-
-                        int rows = ps1.executeUpdate();
-
-                        System.out.println(rows + " record inserted.");
-
-                        ps1.close();
-                        break;
-
-                    case 2:
-                        Statement stmt = con.createStatement();
-
-                        ResultSet rs = stmt.executeQuery(
-                            "SELECT * FROM student");
-
-                        System.out.println("\nID\tName\tMarks");
-
-                        while (rs.next()) {
-                            System.out.println(
-                                rs.getInt("id") + "\t" +
-                                rs.getString("name") + "\t" +
-                                rs.getDouble("marks"));
-                        }
-
-                        rs.close();
-                        stmt.close();
-                        break;
-
-                    case 3:
-                        System.out.print("Enter Student ID to update: ");
-                        int uid = sc.nextInt();
-
-                        System.out.print("Enter New Marks: ");
-                        double newMarks = sc.nextDouble();
-
-                        PreparedStatement ps2 = con.prepareStatement(
-                            "UPDATE student SET marks=? WHERE id=?");
-
-                        ps2.setDouble(1, newMarks);
-                        ps2.setInt(2, uid);
-
-                        int update = ps2.executeUpdate();
-
-                        System.out.println(update + " record updated.");
-
-                        ps2.close();
-                        break;
-
-                    case 4:
-                        System.out.print("Enter Student ID to delete: ");
-                        int did = sc.nextInt();
-
-                        PreparedStatement ps3 = con.prepareStatement(
-                            "DELETE FROM student WHERE id=?");
-
-                        ps3.setInt(1, did);
-
-                        int delete = ps3.executeUpdate();
-
-                        System.out.println(delete + " record deleted.");
-
-                        ps3.close();
-                        break;
-
-                    case 5:
-                        con.close();
-                        sc.close();
-
-                        System.out.println("Application Closed.");
-                        return;
-
-                    default:
-                        System.out.println("Invalid choice!");
+                    System.out.println("Student Inserted!");
                 }
+
+                else if (ch == 2) {
+                    // SELECT
+                    Statement st = con.createStatement();
+                    ResultSet rs = st.executeQuery("SELECT * FROM student");
+
+                    while (rs.next())
+                        System.out.println(rs.getInt(1) + " " +
+                            rs.getString(2) + " " + rs.getDouble(3));
+
+                    rs.close();
+                    st.close();
+                }
+
+                else if (ch == 3) {
+                    // UPDATE
+                    System.out.print("Enter ID and New Marks: ");
+                    int id = sc.nextInt();
+                    double marks = sc.nextDouble();
+
+                    PreparedStatement ps = con.prepareStatement(
+                        "UPDATE student SET marks=? WHERE id=?");
+
+                    ps.setDouble(1, marks);
+                    ps.setInt(2, id);
+                    ps.executeUpdate();
+
+                    System.out.println("Student Updated!");
+                }
+
+                else if (ch == 4) {
+                    // DELETE
+                    System.out.print("Enter Student ID: ");
+                    int id = sc.nextInt();
+
+                    PreparedStatement ps = con.prepareStatement(
+                        "DELETE FROM student WHERE id=?");
+
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+
+                    System.out.println("Student Deleted!");
+                }
+
+                else if (ch == 5) {
+                    con.close();
+                    sc.close();
+                    System.out.println("Application Closed!");
+                    break;
+                }
+
+                else
+                    System.out.println("Invalid Choice!");
             }
 
-        } catch (ClassNotFoundException e) {
-            System.out.println("MySQL JDBC Driver Not Found!");
-            System.out.println("Add MySQL Connector/J to Project Libraries.");
-
-        } catch (SQLException e) {
-            System.out.println("Database Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }
+
+
